@@ -44,7 +44,8 @@
                     <th scope="col">Name</th>
                     <th scope="col">Department</th>
                     <th scope="col">Update</th>
-                    <th scope="col">Delete</th>
+                    <th scope="col" id="delCol">Delete</th>
+                    <th scope="col" hidden="hidden" id="cancelCol">Cancel</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -60,11 +61,13 @@
                     </td>
                     <td>
                       <button id="btnEdit{{item.id}}" type="button" class="btn btn-primary"><i class="bi bi-pencil" (click)="editEmp($event)" id="{{item.id}}"> Edit</i></button>
-                      <button hidden="hidden" type="button" class="btn btn-success" id="update{{item.id}}"><i class="bi bi-check2" (click)="updateEmp($event)" id="{{item.id}}"> Done</i></button>
+                      <button hidden="hidden" id="btnEditDisable{{item.id}}" type="button" class="btn btn-secondary disabled"><i class="bi bi-pencil"> Edit</i></button>
+                      <button hidden="hidden" type="button" class="btn btn-success" id="update{{item.id}}"><i class="bi bi-check2" (click)="updateEmp($event)" id="{{item.id}}"> Update</i></button>
                     </td>
                     <td>
                       <button id="btnDelete{{item.id}}" type="button" class="btn btn-danger"><i class="bi bi-file-x" (click)="deleteEmp($event)" id="{{item.id}}"> Delete</i></button>
-                      <button id="btnDeleteDisable{{item.id}}" hidden="hidden" type="button" class="btn btn-secondary disable"><i class="bi bi-file-x"> Delete</i></button>
+                      <!-- <button id="btnDeleteDisable{{item.id}}" hidden="hidden" type="button" class="btn btn-secondary disable"><i class="bi bi-file-x"> Delete</i></button> -->
+                      <button id="btnCancel{{item.id}}" hidden="hidden" type="button" class="btn btn-danger"><i class="bi bi-x" (click)="cancelEdit($event)" id="{{item.id}}"> Cancel</i></button>
                     </td>
                   </tr>
                 </tbody>
