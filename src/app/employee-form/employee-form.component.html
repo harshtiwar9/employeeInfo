@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="row">
+    <div *ngIf="(router.url === '/form')" class="col display-5 text-center">
+      Employee Form
+    </div>
+    <div *ngIf="(router.url != '/form')" class="col-4 display-5 text-center">
+      Employee Form
+    </div>
+    <div *ngIf="(router.url === '/home')" class="col display-5 text-center">
+      Employee List
+    </div>
+  </div>
+
+  <div *ngIf="(router.url === '/home')" class="row">
+    <div class="col-4 card">
+      <form #f="ngForm" name="empInfo" (ngSubmit)="onSubmit(f)">
+        <div class="mb-3">
+          <label for="formGroupExampleInput" class="form-label">Employee Name</label>
+          <input ngModel type="text" class="form-control" name="empName" placeholder="Employee Name" required>
+        </div>
+        <div class="mb-3">
+          <label for="formGroupExampleInput2" class="form-label">Employee Department</label>
+          <input ngModel type="text" class="form-control" name="empDept" placeholder="Employee Department" required>
+        </div>
+        <div class="col-12 text-center">
+          <button type="submit" class="btn btn-primary">Add Employee</button>
+        </div>
+      </form>
+    </div>
+    <div class="col" *ngIf="(router.url === '/home')">
+      <app-employee-list></app-employee-list>
+    </div>
+  </div>
+
+  <div *ngIf="(router.url === '/form')" class="row justify-content-md-center">
+    <div class="col-4 card">
+      <form #f="ngForm" name="empInfo" (ngSubmit)="onSubmit(f)">
+        <div class="mb-3">
+          <label for="formGroupExampleInput" class="form-label">Employee Name</label>
+          <input ngModel type="text" class="form-control" name="empName" placeholder="Employee Name" required>
+        </div>
+        <div class="mb-3">
+          <label for="formGroupExampleInput2" class="form-label">Employee Department</label>
+          <input ngModel type="text" class="form-control" name="empDept" placeholder="Employee Department" required>
+        </div>
+        <div class="col-12 text-center">
+          <button type="submit" class="btn btn-primary">Add Employee</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+</div>

@@ -1,0 +1,16 @@
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1 center text-light">Employee Information</span>
+      <ul class="nav">
+        <li *ngIf="(router.url === '/form' || router.url === '/employee-list')" class="nav-item">
+          <a class="text-light nav-link" routerLink="/home" routerLinkActive="active">Home</a>
+        </li>
+        <li *ngIf="(router.url === '/home' || router.url === '/form')" class="nav-item">
+          <a class="text-light nav-link" routerLink="/employee-list" routerLinkActive="active">Employee List</a>
+        </li>
+        <li *ngIf="(router.url === '/home' || router.url === '/employee-list')" class="nav-item">
+          <a class="text-light nav-link" routerLink="/form" routerLinkActive="active">Employee Form</a>
+        </li>
+      </ul>
+    </div>
+  </nav>

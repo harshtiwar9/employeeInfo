@@ -1,0 +1,65 @@
+<div class="container">
+
+    <div class="row" *ngIf="(router.url === '/employee-list')" >
+        <div class="col display-5 text-center">
+          Employee List
+        </div>
+      </div>
+
+    <div class="row">
+        <div class="col">
+            <div *ngIf="this.empData.length === 0" class="card text-center">
+                <h5 class="card-title">No Data Added!</h5>
+            </div>
+            <!-- <div *ngIf="this.empData.length > 0" class="card">
+              <li *ngFor="let item of empData; index as i;">{{item.empName}} {{item.empDept}}</li> -->
+
+            <table class="table text-center" *ngIf="this.empData.length > 0">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Department</th>
+                        <th scope="col">Update</th>
+                        <th scope="col" id="delCol">Delete</th>
+                        <th scope="col" hidden="hidden" id="cancelCol">Cancel</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of empData; index as i;">
+                        <th scope="row">{{i+1}}</th>
+                        <td>
+                            <span id="spanName{{item.id}}">{{item.empName}}</span>
+                            <input id="inputName{{item.id}}" type="text" class="form-control" name="empName"
+                                value="{{item.empName}}" hidden="hidden" placeholder="Employee Name">
+                        </td>
+                        <td>
+                            <span id="spanDept{{item.id}}">{{item.empDept}}</span>
+                            <input id="inputDept{{item.id}}" type="text" class="form-control" name="empName"
+                                value="{{item.empDept}}" hidden="hidden" placeholder="Employee Department">
+                        </td>
+                        <td>
+                            <button id="btnEdit{{item.id}}" type="button" class="btn btn-primary"><i
+                                    class="bi bi-pencil" (click)="editEmp($event)" id="{{item.id}}"> Edit</i></button>
+                            <button hidden="hidden" id="btnEditDisable{{item.id}}" type="button"
+                                class="btn btn-secondary disabled"><i class="bi bi-pencil"> Edit</i></button>
+                            <button hidden="hidden" type="button" class="btn btn-success" id="update{{item.id}}"><i
+                                    class="bi bi-check2" (click)="updateEmp($event)" id="{{item.id}}">
+                                    Update</i></button>
+                        </td>
+                        <td>
+                            <button id="btnDelete{{item.id}}" type="button" class="btn btn-danger"><i
+                                    class="bi bi-file-x" (click)="deleteEmp($event)" id="{{item.id}}">
+                                    Delete</i></button>
+                            <!-- <button id="btnDeleteDisable{{item.id}}" hidden="hidden" type="button" class="btn btn-secondary disable"><i class="bi bi-file-x"> Delete</i></button> -->
+                            <button id="btnCancel{{item.id}}" hidden="hidden" type="button" class="btn btn-danger"><i
+                                    class="bi bi-x" (click)="cancelEdit($event)" id="{{item.id}}"> Cancel</i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- </div> -->
+        </div>
+    </div>
+</div>
