@@ -22,7 +22,10 @@
           <label for="formGroupExampleInput2" class="form-label">Employee Department</label>
           <input ngModel type="text" class="form-control" name="empDept" placeholder="Employee Department" required>
         </div>
-        <div class="col-12 text-center">
+        <div *ngIf="f.invalid" class="col-12 text-center">
+          <button type="submit" class="btn btn-secondary disabled">Add Employee</button>
+        </div>
+        <div *ngIf="f.valid" class="col-12 text-center">
           <button type="submit" class="btn btn-primary">Add Employee</button>
         </div>
       </form>
@@ -43,11 +46,15 @@
           <label for="formGroupExampleInput2" class="form-label">Employee Department</label>
           <input ngModel type="text" class="form-control" name="empDept" placeholder="Employee Department" required>
         </div>
-        <div class="col-12 text-center">
+        <div *ngIf="f.invalid" class="col-12 text-center">
+          <button type="submit" class="btn btn-secondary disabled">Add Employee</button>
+        </div>
+        <div *ngIf="f.valid" class="col-12 text-center">
           <button type="submit" class="btn btn-primary">Add Employee</button>
         </div>
+        
       </form>
     </div>
   </div>
-  
+
 </div>

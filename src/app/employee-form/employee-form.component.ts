@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -22,13 +23,13 @@ export class EmployeeFormComponent implements OnInit {
 
   //Generate random ID
   generateId() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
       return v.toString(16);
     });
   }
 
-  onSubmit (data: any){ //onSubmit add data to Local Storage.
+  onSubmit(data: any) { //onSubmit add data to Local Storage.
 
     //Data push to local storage
     this.empData.push({
@@ -41,7 +42,15 @@ export class EmployeeFormComponent implements OnInit {
 
     //reset form
     data.reset();
-  
+
+    //Alert data recorded
+    alert("Employee data recorded!");
+
+    //Navigate to update List component
+    this.router.url == "/home" ? this.router.navigateByUrl('/employee-list', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['home']);
+    }) : ""
+
   }
 
 }
