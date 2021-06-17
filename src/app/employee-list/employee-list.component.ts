@@ -19,10 +19,15 @@ export class EmployeeListComponent implements OnInit {
   empData = JSON.parse(this.checkEmpArray == null ? "[]" : this.checkEmpArray);
 
   empIdIndexBeforeUpdate = -1;
+  empNameBeforeUpdate = "";
+  empDeptBeforeUpdate = "";
 
   editEmp(event: any){ //get input field to update data
     
     const empID = event.srcElement.id; //empID as reference to update data fields
+
+    this.empNameBeforeUpdate = this.empData.filter((item: { id: any; }) => item.id == empID).map((item: { empName: any; }) => {return item.empName}).toString();
+    this.empDeptBeforeUpdate = this.empData.filter((item: { id: any; }) => item.id == empID).map((item: { empDept: any; }) => {return item.empDept}).toString();
 
     //find Index of empID before update
     this.empIdIndexBeforeUpdate = this.empData.findIndex((emp: any) => emp.id == empID);
@@ -56,6 +61,10 @@ export class EmployeeListComponent implements OnInit {
   cancelEdit(event: any){ //Cancel Update Operation
 
     const empID = event.srcElement.id; //empID as reference to update data fields
+
+    //reset value of input
+    $("#inputName"+empID).val(this.empNameBeforeUpdate);
+    $("#inputDept"+empID).val(this.empDeptBeforeUpdate);
 
     //Hide Cancel button
     $("#btnCancel"+empID).attr("hidden","hidden");
