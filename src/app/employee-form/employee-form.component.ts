@@ -31,9 +31,6 @@ export class EmployeeFormComponent implements OnInit {
 
   onSubmit(data: any) { //onSubmit add data to Local Storage.
 
-    // const checkEmpArray = localStorage.getItem('empArray');
-    // const empData = JSON.parse(checkEmpArray == null ? "[]" : checkEmpArray);
-
     //Data push to local storage
     this.localEmpArray.push({
       id: this.generateId(),
