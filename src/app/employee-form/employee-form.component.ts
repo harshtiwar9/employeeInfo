@@ -16,10 +16,7 @@ export class EmployeeFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  checkEmpArray = localStorage.getItem('empArray');
-  empData = JSON.parse(this.checkEmpArray == null ? "[]" : this.checkEmpArray);
-
-  empIdIndexBeforeUpdate = -1;
+  
 
   //Generate random ID
   generateId() {
@@ -31,13 +28,16 @@ export class EmployeeFormComponent implements OnInit {
 
   onSubmit(data: any) { //onSubmit add data to Local Storage.
 
+    const checkEmpArray = localStorage.getItem('empArray');
+    const empData = JSON.parse(checkEmpArray == null ? "[]" : checkEmpArray);
+
     //Data push to local storage
-    this.empData.push({
+    empData.push({
       id: this.generateId(),
       ...data.value
     });
     localStorage.setItem(
-      "empArray", JSON.stringify(this.empData)
+      "empArray", JSON.stringify(empData)
     )
 
     //reset form
