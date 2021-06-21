@@ -9,6 +9,7 @@ import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { HeaderComponent } from './header/header.component';
 import { EmployeeFormComponent } from './employee-form/employee-form.component';
 import { HomeComponent } from './home/home.component';
+import { EmployeeService } from './employeeservice.service';
 
 const routes: Routes = [
   {path: 'employee-list', component: EmployeeListComponent},
@@ -30,7 +31,7 @@ const routes: Routes = [
     FormsModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [],
+  providers: [EmployeeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

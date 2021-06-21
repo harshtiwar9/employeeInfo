@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { EmployeeService } from '../employeeservice.service';
 
 @Component({
   selector: 'app-employee-list',
@@ -8,29 +9,29 @@ import { Router } from '@angular/router';
 })
 export class EmployeeListComponent implements OnInit {
 
-  constructor(public router: Router) {
-
-  }
-
-  ngOnInit(): void {
-  }
-
-  checkEmpArray = localStorage.getItem('empArray');
-  empData = JSON.parse(this.checkEmpArray == null ? "[]" : this.checkEmpArray);
+  localEmpArray: any;
 
   empIdIndexBeforeUpdate = -1;
   empNameBeforeUpdate = "";
   empDeptBeforeUpdate = "";
 
+  constructor(public router: Router, private _employeeService: EmployeeService) {
+
+  }
+
+  ngOnInit(): void {
+    this.localEmpArray = this._employeeService.getEmployees();
+  }
+
   editEmp(event: any){ //get input field to update data
     
     const empID = event.srcElement.id; //empID as reference to update data fields
 
-    this.empNameBeforeUpdate = this.empData.filter((item: { id: any; }) => item.id == empID).map((item: { empName: any; }) => {return item.empName}).toString();
-    this.empDeptBeforeUpdate = this.empData.filter((item: { id: any; }) => item.id == empID).map((item: { empDept: any; }) => {return item.empDept}).toString();
+    this.empNameBeforeUpdate = this.localEmpArray.filter((item: { id: any; }) => item.id == empID).map((item: { empName: any; }) => {return item.empName}).toString();
+    this.empDeptBeforeUpdate = this.localEmpArray.filter((item: { id: any; }) => item.id == empID).map((item: { empDept: any; }) => {return item.empDept}).toString();
 
     //find Index of empID before update
-    this.empIdIndexBeforeUpdate = this.empData.findIndex((emp: any) => emp.id == empID);
+    this.empIdIndexBeforeUpdate = this.localEmpArray.findIndex((emp: any) => emp.id == empID);
 
     const hideObjectArray = ["spanName","spanDept","btnEdit","btnDelete"]; //hide span ID's
     const showObjectArray = ["inputName","inputDept","update","btnCancel"]; //show input ID's
@@ -42,17 +43,17 @@ export class EmployeeListComponent implements OnInit {
     $("#cancelCol").removeAttr("hidden"); //Show Cancel Heading
 
     //Logic to hide Delete button while Update in progress
-    this.empData.filter((item: { id: any; }) => item.id != empID)
+    this.localEmpArray.filter((item: { id: any; }) => item.id != empID)
       .map((item: { id: any; }) => {return item.id})
       .map((item: string) => $("#btnDelete"+item).attr("hidden","hidden"))
     
     //Logic to hide edit button while Update in progress
-    this.empData.filter((item: { id: any; }) => item.id != empID)
+    this.localEmpArray.filter((item: { id: any; }) => item.id != empID)
     .map((item: { id: any; }) => {return item.id})
     .map((item: string) => $("#btnEdit"+item).attr("hidden","hidden"))  
 
     //Logic to show disable edit button while Update in progress
-    this.empData.filter((item: { id: any; }) => item.id != empID)
+    this.localEmpArray.filter((item: { id: any; }) => item.id != empID)
     .map((item: { id: any; }) => {return item.id})
     .map((item: string) => $("#btnEditDisable"+item).removeAttr("hidden"))
 
@@ -73,15 +74,15 @@ export class EmployeeListComponent implements OnInit {
     $("#update"+empID).attr("hidden","hidden");
 
     //Logic to hide disable edit button while Update in progress
-    this.empData.map((item: { id: any; }) => {return item.id})
+    this.localEmpArray.map((item: { id: any; }) => {return item.id})
     .map((item: string) => $("#btnEditDisable"+item).attr("hidden","hidden"))
 
     //Logic to show Delete button
-    this.empData.map((item: { id: any; }) => {return item.id})
+    this.localEmpArray.map((item: { id: any; }) => {return item.id})
                 .map((item: string) => $("#btnDelete"+item).removeAttr("hidden"));
     
     //Logic to show edit button
-    this.empData.map((item: { id: any; }) => {return item.id})
+    this.localEmpArray.map((item: { id: any; }) => {return item.id})
                 .map((item: string) => $("#btnEdit"+item).removeAttr("hidden"))  
 
     //Show Data back            
@@ -106,15 +107,15 @@ export class EmployeeListComponent implements OnInit {
     showObjectArray.map((item) => $("#"+item+empID).removeAttr("hidden")); //Show Span
 
     //Logic to hide disable edit button while Update in progress
-    this.empData.map((item: { id: any; }) => {return item.id})
+    this.localEmpArray.map((item: { id: any; }) => {return item.id})
     .map((item: string) => $("#btnEditDisable"+item).attr("hidden","hidden"))
 
     //Logic to show Delete button
-    this.empData.map((item: { id: any; }) => {return item.id})
+    this.localEmpArray.map((item: { id: any; }) => {return item.id})
                 .map((item: string) => $("#btnDelete"+item).removeAttr("hidden"));
     
     //Logic to show edit button
-    this.empData.map((item: { id: any; }) => {return item.id})
+    this.localEmpArray.map((item: { id: any; }) => {return item.id})
                 .map((item: string) => $("#btnEdit"+item).removeAttr("hidden"))
     
     $("#cancelCol").attr("hidden","hidden"); //Hide Cancel Heading
@@ -124,27 +125,25 @@ export class EmployeeListComponent implements OnInit {
     updatedEmpDept = $("#inputDept"+empID).val();
 
     //check if employee id exist. If exist then create new array without that emp and if not exist alert error.
-    const idFound = this.empData.filter((item: { id: any; }) => item.id == empID).length == 1 ?
-    this.empData.filter((item: { id: any; }) => item.id != empID)
+    const idFound = this.localEmpArray.filter((item: { id: any; }) => item.id == empID).length == 1 ?
+    this.localEmpArray.filter((item: { id: any; }) => item.id != empID)
     : alert("Employee record not found!");
 
     //empty local array
-    this.empData = [];
+    this.localEmpArray = [];
 
     //push the unaffected data to array back
-    this.empData.push(...idFound);
+    this.localEmpArray.push(...idFound);
     
     //push new emp data
-    this.empData.splice(this.empIdIndexBeforeUpdate,0,{
+    this.localEmpArray.splice(this.empIdIndexBeforeUpdate,0,{
       id: empID,
       empName: updatedEmpName,
       empDept: updatedEmpDept
     })
 
-    localStorage.clear(); //clear local storage
-    localStorage.setItem( //add new data to local storage
-      "empArray", JSON.stringify(this.empData)
-    )
+    //Call Employee service to set new Data
+    this._employeeService.setEmployees(this.localEmpArray);
 
   }
 
@@ -154,23 +153,23 @@ export class EmployeeListComponent implements OnInit {
     const empID = event.srcElement.id;
 
     //find Index of empID
-    const empIndex = this.empData.findIndex((emp: any) => emp.id == empID);
+    const empIndex = this.localEmpArray.findIndex((emp: any) => emp.id == empID);
   
     //Confirm box for operation
-    const operationBool = confirm("Are you sure you want to delete "+this.empData[empIndex]["empName"]+"?") 
+    const operationBool = confirm("Are you sure you want to delete "+this.localEmpArray[empIndex]["empName"]+"?") 
     
     //Update local storage for Yes and alert for No
     operationBool === true ? 
-    localStorage.setItem(
-      "empArray", JSON.stringify(this.empData.filter((emp: { id: any; }) => emp.id != empID))
-    )
+    //Call Employee service to set new Data
+    this._employeeService.setEmployees(this.localEmpArray.filter((emp: { id: any; }) => emp.id != empID))
     : alert("Operation Canceled!")
 
     //Remove data
-    operationBool === true ? this.empData.splice(empIndex,1) : ""
+    operationBool === true ? this.localEmpArray.splice(empIndex,1) : ""
+    // operationBool === true ? this.localEmpArray = this._employeeService.getEmployees() : ""
     
     //Data removed alert
-    this.empData.filter((emp: { id: any; }) => emp.id == empID).length === 0 ? 
+    this.localEmpArray.filter((emp: { id: any; }) => emp.id == empID).length === 0 ? 
       alert("Employee data removed!") : ""
 
     //update Index to -1

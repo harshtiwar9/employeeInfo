@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { EmployeeService } from '../employeeservice.service';
 
 @Component({
   selector: 'app-employee-form',
@@ -8,15 +9,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./employee-form.component.css']
 })
 export class EmployeeFormComponent implements OnInit {
+  
+  //Local variable to store data
+  localEmpArray: any;
 
-  constructor(public router: Router) {
+  constructor(public router: Router, private _employeeService: EmployeeService) {
 
   }
 
   ngOnInit(): void {
+    this.localEmpArray = this._employeeService.getEmployees();
   }
-
-  
 
   //Generate random ID
   generateId() {
@@ -28,17 +31,17 @@ export class EmployeeFormComponent implements OnInit {
 
   onSubmit(data: any) { //onSubmit add data to Local Storage.
 
-    const checkEmpArray = localStorage.getItem('empArray');
-    const empData = JSON.parse(checkEmpArray == null ? "[]" : checkEmpArray);
+    // const checkEmpArray = localStorage.getItem('empArray');
+    // const empData = JSON.parse(checkEmpArray == null ? "[]" : checkEmpArray);
 
     //Data push to local storage
-    empData.push({
+    this.localEmpArray.push({
       id: this.generateId(),
       ...data.value
     });
-    localStorage.setItem(
-      "empArray", JSON.stringify(empData)
-    )
+
+    //Call Employee service to set new Data
+    this._employeeService.setEmployees(this.localEmpArray);
 
     //reset form
     data.reset();
